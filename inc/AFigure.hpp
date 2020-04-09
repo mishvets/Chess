@@ -12,10 +12,17 @@ public:
     virtual ~AFigure();
     AFigure &operator=(const AFigure &src);
 
-    virtual bool	validMove(int x, int y) = 0;
-    virtual void	move(int x, int y) = 0;
-	bool			isActive() const;
-	void			setActive(bool active);
+    virtual bool		validMove(int x, int y, const AFigure *fig) = 0;
+    virtual void		move(int x, int y) = 0;
+	bool				isActive() const;
+
+	void				setActive(bool active);
+	void				setPosX(int posX);
+	void				setPosY(int posY);
+
+	const std::string	&getLabel() const;
+	int					getPosX() const;
+	int					getPosY() const;
 
 protected:
 	bool		_active;

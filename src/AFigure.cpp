@@ -38,3 +38,28 @@ void AFigure::setActive(bool active)
 	_active = active;
 }
 
+const std::string &AFigure::getLabel() const
+{
+	return _label;
+}
+
+int AFigure::getPosX() const
+{
+	return _posX;
+}
+
+void AFigure::setPosX(int posX)
+{
+	_posX = posX;
+}
+
+int AFigure::getPosY() const
+{
+	return _posY;
+}
+
+void AFigure::setPosY(int posY)
+{
+	_posY = posY;
+}
+

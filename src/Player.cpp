@@ -1,19 +1,14 @@
-//
-// Created by mshvets on 09.04.2020.
-//
+#include "../inc/Player.hpp"
 
-#include "Player.hpp"
-
-Player::Player(const char &side) : _side(side)
+Player::Player(const std::string &side) : _side(side)
 {
-//	int y;
-	int y = _side == 'W' ? 1 : 6;
-	for (int i = 0; i < 8; ++i) {
-		//;
+	int y = _side == "W" ? 1 : 6;
+	for (int x = 0; x < 8; ++x) {
+		_figArr[x] = new Pawn(_side, x, y);
 	}
 }
 
 Player::~Player()
 {
-
+	delete []_figArr;
 }

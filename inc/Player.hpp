@@ -2,17 +2,18 @@
 #define CHESS_PLAYER_HPP
 
 #include <iostream>
-#include "../inc/AFigure.hpp"
+#include "AFigure.hpp"
+#include "Pawn.hpp"
 
 class Player
 {
 public:
-	Player(const char &side);
+	Player(const std::string &side);
 	~Player();
 
 private:
 //	std::string _name;
-	char		_side;
+	std::string	_side;
 	AFigure		_figArr[16];
 
 };
