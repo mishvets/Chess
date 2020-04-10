@@ -9,7 +9,7 @@ class AFigure
 public:
     AFigure(const std::string &label, int posX, int posY);
     AFigure(const AFigure &src);
-    virtual ~AFigure();
+    virtual ~AFigure() = default;
     AFigure &operator=(const AFigure &src);
 
     virtual bool		validMove(int x, int y, const AFigure *fig) = 0;

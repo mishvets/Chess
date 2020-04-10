@@ -24,8 +24,10 @@ public:
 
 private:
 	static Game	*_instance;
-	Player		_pl[2];
-	AFigure		***_board;
+	Player		*_pl[2];
+	AFigure		*_board[_ySizeBoard][_xSizeBoard];
+//	std::array<Player *, 2>	_pl;
+//	std::array<AFigure *, _ySizeBoard, _xSizeBoard>	_board[_ySizeBoard][_xSizeBoard];
 	std::string _lastMove;
 
 	Game();

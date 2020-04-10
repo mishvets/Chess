@@ -2,13 +2,16 @@
 
 Player::Player(const std::string &side) : _side(side)
 {
+//	std::shared_ptr<AFigure> ptr(p);
 	int y = _side == "W" ? 1 : 6;
 	for (int x = 0; x < 8; ++x) {
-		_figArr[x] = new Pawn(_side, x, y);
+		_figVct.push_back(new Pawn(_side, x, y));
 	}
 }
 
 Player::~Player()
 {
-	delete []_figArr;
+	for (auto fig : _figVct)
+		delete fig;
 }
+

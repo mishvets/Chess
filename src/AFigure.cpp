@@ -11,10 +11,10 @@ AFigure::AFigure(const AFigure &src)
 	*this = src;
 }
 
-AFigure::~AFigure()
-{
-	std::cout << "* AFigure default destructor *" << std::endl;
-}
+//AFigure::~AFigure()
+//{
+//	std::cout << "* AFigure default destructor *" << std::endl;
+//}
 
 AFigure &AFigure::operator=(const AFigure &src)
 {

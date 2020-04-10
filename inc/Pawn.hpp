@@ -5,17 +5,17 @@
 #include "AFigure.hpp"
 #include "Game.hpp"
 
-class Pawn : AFigure
+class Pawn : public AFigure
 {
 public:
 	Pawn(const std::string &side, int posX, int posY);
 	Pawn(const Pawn &src);
-	~Pawn();
+//	~Pawn();
 	Pawn &operator=(const Pawn &src);
 
 	bool	validMove(int x, int y, const AFigure *fig);
 	void	move(int x, int y);
-	bool enPassant(int xNext);
+	bool	enPassant(int xNext);
 };
 
 

@@ -2,6 +2,8 @@
 #define CHESS_PLAYER_HPP
 
 #include <iostream>
+#include <vector>
+//#include <bits/shared_ptr.h>
 #include "AFigure.hpp"
 #include "Pawn.hpp"
 
@@ -11,10 +13,12 @@ public:
 	Player(const std::string &side);
 	~Player();
 
+	std::vector<AFigure *> _figVct;
 private:
 //	std::string _name;
 	std::string	_side;
-	AFigure		_figArr[16];
+	//std::shared_ptr
+//	AFigure		_figVct[16];
 
 };
 
