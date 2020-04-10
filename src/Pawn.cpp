@@ -1,7 +1,3 @@
-//
-// Created by mshvets on 09.04.2020.
-//
-
 #include "../inc/Pawn.hpp"
 
 Pawn::Pawn(const std::string &side, int posX, int posY) : AFigure(side + "P", posX, posY)
@@ -10,11 +6,6 @@ Pawn::Pawn(const std::string &side, int posX, int posY) : AFigure(side + "P", po
 }
 
 Pawn::Pawn(const Pawn &src) : AFigure(src)
-{
-
-}
-
-Pawn::~Pawn()
 {
 
 }
