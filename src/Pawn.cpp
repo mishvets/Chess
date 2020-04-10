@@ -1,6 +1,6 @@
 #include "../inc/Pawn.hpp"
 
-Pawn::Pawn(const std::string &side, int posX, int posY) : AFigure(side + "P", posX, posY)
+Pawn::Pawn(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {
 
 }

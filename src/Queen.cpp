@@ -1,6 +1,6 @@
 #include "../inc/Queen.hpp"
 
-Queen::Queen(const std::string &side, int posX, int posY) : AFigure(side + "Q", posX, posY)
+Queen::Queen(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {
 
 }

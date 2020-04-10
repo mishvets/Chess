@@ -1,6 +1,6 @@
 #include "../inc/Rook.hpp"
 
-Rook::Rook(const std::string &side, int posX, int posY) : AFigure(side + "R", posX, posY)
+Rook::Rook(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {
 
 }

@@ -1,7 +1,10 @@
 #include <iostream>
+#include "./inc/Game.hpp"
 
 int main()
 {
-	std::cout << "Hello, World!" << std::endl;
+	Game	*chess = Game::getInstance();
+	chess->printBoard();
+
 	return 0;
 }

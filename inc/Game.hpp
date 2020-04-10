@@ -2,8 +2,16 @@
 #define CHESS_GAME_HPP
 
 #include <iostream>
+#include <cstdlib>
+#include <fstream>
 #include "AFigure.hpp"
 #include "Player.hpp"
+#include "King.hpp"
+#include "Bishop.hpp"
+#include "Knight.hpp"
+#include "Rook.hpp"
+#include "Queen.hpp"
+#include "Pawn.hpp"
 
 class Game
 {
@@ -14,9 +22,12 @@ public:
 	~Game();
 
 //	save
-//	load
+	bool	loadGame();
+	bool	readFile(std::ifstream &file);
+	void 	printBoard();
+	void 	userInput();
 
-	void				setFig(AFigure *fig, int posX, int posY);
+	void	setFig(AFigure *fig, int posX, int posY);
 
 	static Game			*getInstance();
 	AFigure				*getFig(int posX, int posY) const;

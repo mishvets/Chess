@@ -1,6 +1,6 @@
 #include "../inc/Knight.hpp"
 
-Knight::Knight(const std::string &side, int posX, int posY) : AFigure(side + "N", posX, posY)
+Knight::Knight(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {
 
 }

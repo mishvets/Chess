@@ -1,6 +1,6 @@
 #include "../inc/Bishop.hpp"
 
-Bishop::Bishop(const std::string &side, int posX, int posY) : AFigure(side + "B", posX, posY)
+Bishop::Bishop(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {
 
 }

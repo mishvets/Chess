@@ -1,6 +1,6 @@
 #include "../inc/King.hpp"
 
-King::King(const std::string &side, int posX, int posY) : AFigure(side + "K", posX, posY)
+King::King(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {
 
 }

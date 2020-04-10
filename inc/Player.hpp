@@ -5,7 +5,6 @@
 #include <vector>
 //#include <bits/shared_ptr.h>
 #include "AFigure.hpp"
-#include "Pawn.hpp"
 
 class Player
 {
@@ -13,10 +12,11 @@ public:
 	Player(const std::string &side);
 	~Player();
 
-	std::vector<AFigure *> _figVct;
+	void	addFig(AFigure *fig);
 private:
 //	std::string _name;
-	std::string	_side;
+	std::string				_side;
+	std::vector<AFigure *>	_figVct;
 	//std::shared_ptr
 //	AFigure		_figVct[16];
 
