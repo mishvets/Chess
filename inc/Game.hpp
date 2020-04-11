@@ -50,6 +50,8 @@ private:
 	std::string _lastMove;
 	std::string _crntMove;
 	std::string _errMsg;
+	std::string _win;
+	int 		_plIndx;
 
 	Game();
 };

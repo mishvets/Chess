@@ -12,6 +12,7 @@ public:
 	Player(const std::string &side);
 	~Player();
 
+	const std::string &getSide() const;
 	void	addFig(AFigure *fig);
 private:
 //	std::string _name;

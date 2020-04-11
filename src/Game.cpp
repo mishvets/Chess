@@ -9,11 +9,11 @@ Game *Game::getInstance()
 	return _instance;
 }
 
-Game::Game()
+Game::Game() : _plIndx(0)
 {
 	//init players
-	_pl[0] = new Player("W");
-	_pl[1] = new Player("B");
+	_pl[0] = new Player("White");
+	_pl[1] = new Player("Black");
 
 //	startGame();
 
@@ -149,7 +149,13 @@ void Game::printBoard()
 {
 	if (_errMsg.empty())
 	{
+		if (!_win.empty())
+		{
+			std::cout << _win << std::endl;
+			return;
+		}
 		system("clear");
+		std::cout << "                   W H I T E" << std::endl;
 		std::cout << "   " ;
 		for (int x = 0; x < _xSizeBoard; ++x) {
 			std::cout << "   " << (char)(x + 97) << " ";
@@ -173,6 +179,7 @@ void Game::printBoard()
 			std::cout << "   " << (char)(x + 97) << " ";
 		}
 		std::cout << std::endl;
+		std::cout << "                   B L A C K" << std::endl;
 		std::cout << std::endl;
 //	std::cout << std::endl;
 //	std::cout << " -----------------------" << std::endl;
@@ -201,7 +208,9 @@ void Game::printBoard()
 //		std::cout << std::endl;
 //		std::cout << " -------------------------------" << std::endl;
 //	}
-	} else
+	}
+
+	else
 	{
 		std::cout << _errMsg << std::endl;
 		_errMsg.clear();
@@ -217,7 +226,7 @@ bool Game::userInput()
 //	std::string to;
 
 input:
-	std::cout << "Enter command: ";
+	std::cout << "<" << _pl[_plIndx]->getSide() <<"> Enter command: ";
 	std::getline(std::cin, cmnd);
 	_crntMove = cmnd.substr(cmnd.find(' ') + 1);
 	cmnd = cmnd.substr(0,cmnd.find(' '));
@@ -328,13 +337,11 @@ void Game::saveGame()
 
 void Game::runGame()
 {
-	while (userInput())
+	while (userInput() && _win.empty())
 	{
-//		userInput();
 		updateGame();
 		printBoard();
 	}
-//	AFigure *f = new Queen("d", 1, 1);
 }
 
 void Game::updateGame()
@@ -362,8 +369,13 @@ void Game::updateGame()
 		_errMsg = "Coordinates FROM and TO must be divided by space. Example: -m a4 b5";
 		return;
 	}
-	for (int j = 0; j < 4; ++j) {
-		if (crdMove[j] < 0 || crdMove[j] > 7)
+	if (crdMove[0] == crdMove[2] && crdMove[1] == crdMove[3])
+	{
+		_errMsg = "Coordinates FROM and TO must be various";
+		return;
+	}
+	for (int j : crdMove) {
+		if (j < 0 || j > 7)
 		{
 			_errMsg = "Bad coordinates: " + _crntMove;
 			return;
@@ -372,6 +384,11 @@ void Game::updateGame()
 	if (!(fig = getFig(crdMove[0], crdMove[1])))
 	{
 		_errMsg = "No figure on ceil: " + std::string(_crntMove, 0, 2);
+		return;
+	}
+	if (fig->getLabel()[0] != _pl[_plIndx]->getSide()[0])
+	{
+		_errMsg = "You can not move your opponent's figures.";
 		return;
 	}
 	enemy = getFig(crdMove[2], crdMove[3]);
@@ -389,7 +406,7 @@ void Game::updateGame()
 			for (int x = crdMove[0]; x < crdMove[2]; x += xStep) {
 				if (getFig(x, y))
 				{
-					_errMsg = "Impossible move. On cell" + std::string(1, x + 97)
+					_errMsg = "Impossible move. On cell " + std::string(1, x + 97)
 							+ std::string(1, y + 49) + " there is another figure.";
 					return;
 				}
@@ -410,10 +427,16 @@ void Game::updateGame()
 	else if (enemy && enemy->getLabel()[0] != fig->getLabel()[0])
 	{
 		enemy->setActive(false);
+		if (enemy->getLabel()[1] == 'K')
+		{
+			_win = enemy->getLabel()[0] == 'B'? "White" : "Black";
+			_win += " side is win!";
+		}
 	}
 	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
 	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
 	std::getline(buff, _lastMove);
+	_plIndx = (_plIndx + 1) % 2;
 }
 
 int Game::figStep(int from, int to)

@@ -20,3 +20,8 @@ void Player::addFig(AFigure *fig)
 	_figVct.push_back(fig);
 }
 
+const std::string &Player::getSide() const
+{
+	return _side;
+}
+

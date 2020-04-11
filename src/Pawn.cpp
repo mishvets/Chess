@@ -52,7 +52,7 @@ bool Pawn::enPassant(int xNext)
 	int 		yLastMvTo;
 	int			direct;
 
-	if ((_label[0] == 'W' && _posY == 5) || (_label[0] == 'B' && _posY == 4))
+	if ((_label[0] == 'W' && _posY == 4) || (_label[0] == 'B' && _posY == 3))
 	{
 		lastMove = Game::getInstance()->getLastMove();
 		xLastMvFrom = (int)lastMove[0] - 97;
@@ -64,7 +64,7 @@ bool Pawn::enPassant(int xNext)
 			fig = Game::getInstance()->getFig(xNext, _posY);
 			if (fig && fig->getLabel()[1] == 'P' && fig->getLabel()[0] != _label[0]) //The fig is opposite pawn
 			{
-				direct = this->_label[0] == 'W' ? 1 : -1;
+				direct = fig->getLabel()[0] == 'W' ? 1 : -1;
 				if (xLastMvTo == xLastMvFrom && yLastMvTo - yLastMvFrom == direct * 2) //The opposite pawn has moved two squares from its original square
 				{
 					fig->setActive(false);
