@@ -105,6 +105,7 @@ bool Game::readFile(std::ifstream &file)
 	if (_lastMove == "0")
 		_lastMove.clear();
 	_crntMove.clear();
+	file >> _plIndx;
 	while (file)
 	{
 		file >> active;
@@ -249,7 +250,7 @@ input:
 	confirmR:
 		std::cout << "Are you sure you want to start a new game? Unsaved game will be lost." << std::endl;
 		std::cout << "Enter (y/n):" << std::endl;
-		std::cin >> cmnd;
+		std::getline(std::cin, cmnd);
 		for (int i = 0; i < cmnd.length(); ++i)
 			cmnd[i] = ::tolower(cmnd[i]);
 		if (cmnd == "y" || cmnd == "yes")
@@ -267,7 +268,7 @@ input:
 	confirmQ:
 		std::cout << "Are you sure you want quit from game? Unsaved game will be lost." << std::endl;
 		std::cout << "Enter (y/n):" << std::endl;
-		std::cin >> cmnd;
+		std::getline(std::cin, cmnd);
 		for (int i = 0; i < cmnd.length(); ++i)
 			cmnd[i] = ::tolower(cmnd[i]);
 		if (cmnd == "y" || cmnd == "yes")
@@ -326,6 +327,7 @@ void Game::saveGame()
 		out << _lastMove << std::endl;
 	else
 		out << "0" << std::endl;
+	out << _plIndx << std::endl;
 	for (int y = 0; y < _ySizeBoard; ++y) {
 		for (int x = 0; x < _xSizeBoard; ++x) {
 			if (_board[y][x])
@@ -337,7 +339,7 @@ void Game::saveGame()
 
 void Game::runGame()
 {
-	while (userInput() && _win.empty())
+	while (_win.empty() && userInput())
 	{
 		updateGame();
 		printBoard();
@@ -402,16 +404,16 @@ void Game::updateGame()
 	{
 		xStep = figStep(crdMove[0], crdMove[2]);
 		yStep = figStep(crdMove[1], crdMove[3]);
-		for (int y = crdMove[1]; y < crdMove[3]; y += yStep) {
-			for (int x = crdMove[0]; x < crdMove[2]; x += xStep) {
-				if (getFig(x, y))
-				{
-					_errMsg = "Impossible move. On cell " + std::string(1, x + 97)
-							+ std::string(1, y + 49) + " there is another figure.";
-					return;
-				}
+//		for (int y = crdMove[1]; y < crdMove[3]; y += yStep) {
+		for (int x = crdMove[0] + xStep, y = crdMove[1] + yStep; x < crdMove[2] && y < crdMove[3]; x += xStep,  y += yStep) {
+			if (getFig(x, y))
+			{
+				_errMsg = "Impossible move. On cell " + std::string(1, x + 97)
+						+ std::string(1, y + 49) + " there is another figure.";
+				return;
 			}
 		}
+//		}
 	}
 //	if (!(enemy = getFig(crdMove[2], crdMove[3])))
 //	{
