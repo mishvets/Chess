@@ -16,7 +16,7 @@ Queen &Queen::operator=(const Queen &src)
 	return *this;
 }
 
-bool Queen::validMove(int x, int y, const AFigure *fig)
+bool Queen::validMove(int x, int y)
 {
 	return (_posX == x || _posY == y || _posX - x == _posY - y || _posX - x == y - _posY);
 }

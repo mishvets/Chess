@@ -16,7 +16,7 @@ King &King::operator=(const King &src)
 	return *this;
 }
 
-bool King::validMove(int x, int y, const AFigure *fig)
+bool King::validMove(int x, int y)
 {
 	return (x - _posX == 0 || x - _posX == 1 || x - _posX == -1) &&
 		   (y - _posY == 0 || y - _posY == 1 || y - _posY == -1);

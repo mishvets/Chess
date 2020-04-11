@@ -12,7 +12,7 @@ public:
     virtual ~AFigure() = default;
     AFigure &operator=(const AFigure &src);
 
-    virtual bool		validMove(int x, int y, const AFigure *fig) = 0;
+    virtual bool validMove(int x, int y) = 0;
     virtual void		move(int x, int y) = 0;
 	bool				isActive() const;
 

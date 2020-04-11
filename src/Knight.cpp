@@ -16,7 +16,7 @@ Knight &Knight::operator=(const Knight &src)
 	return *this;
 }
 
-bool Knight::validMove(int x, int y, const AFigure *fig)
+bool Knight::validMove(int x, int y)
 {
 	int var[][2]={
 			{1,-2},

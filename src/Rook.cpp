@@ -16,7 +16,7 @@ Rook&Rook::operator=(const Rook&src)
 	return *this;
 }
 
-bool Rook::validMove(int x, int y, const AFigure *fig)
+bool Rook::validMove(int x, int y)
 {
 	return (_posX == x || _posY == y);
 }

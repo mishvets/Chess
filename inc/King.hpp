@@ -12,7 +12,7 @@ public:
 	King(const King &src);
 	King &operator=(const King &src);
 
-	bool	validMove(int x, int y, const AFigure *fig);
+	bool validMove(int x, int y);
 	void	move(int x, int y);
 };
 

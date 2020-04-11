@@ -393,8 +393,7 @@ void Game::updateGame()
 		_errMsg = "You can not move your opponent's figures.";
 		return;
 	}
-	enemy = getFig(crdMove[2], crdMove[3]);
-	if (!fig->validMove(crdMove[2], crdMove[3], enemy))
+	if (!fig->validMove(crdMove[2], crdMove[3]))
 	{
 		_errMsg = "No valid move for " + fig->getLabel();
 		return;
@@ -421,6 +420,7 @@ void Game::updateGame()
 ////		_lastMove = std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49);
 //		buff << crdMove[0] + 48 << crdMove[1] + 48 << " " << crdMove[2] + 48 << crdMove[3] + 48;
 //	}
+	enemy = getFig(crdMove[2], crdMove[3]);
 	if (enemy && enemy->getLabel()[0] == fig->getLabel()[0])
 	{
 		_errMsg = "Impossible move. You can`t kick your own figure.";

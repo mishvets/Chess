@@ -16,7 +16,7 @@ Bishop &Bishop::operator=(const Bishop &src)
 	return *this;
 }
 
-bool Bishop::validMove(int x, int y, const AFigure *fig)
+bool Bishop::validMove(int x, int y)
 {
 	return (_posX - x == _posY - y || _posX - x == y - _posY);
 }

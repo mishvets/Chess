@@ -12,7 +12,7 @@ public:
 	Queen(const Queen &src);
 	Queen &operator=(const Queen &src);
 
-	bool	validMove(int x, int y, const AFigure *fig);
+	bool validMove(int x, int y);
 	void	move(int x, int y);
 };
 

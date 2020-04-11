@@ -12,7 +12,7 @@ public:
 	Bishop(const Bishop &src);
 	Bishop &operator=(const Bishop &src);
 
-	bool	validMove(int x, int y, const AFigure *fig);
+	bool validMove(int x, int y);
 	void	move(int x, int y);
 };
 

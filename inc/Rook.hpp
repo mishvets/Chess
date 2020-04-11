@@ -12,7 +12,7 @@ public:
 	Rook(const Rook &src);
 	Rook &operator=(const Rook &src);
 
-	bool	validMove(int x, int y, const AFigure *fig);
+	bool validMove(int x, int y);
 	void	move(int x, int y);
 };
 

@@ -16,8 +16,9 @@ Pawn &Pawn::operator=(const Pawn &src)
 	return *this;
 }
 
-bool Pawn::validMove(int x, int y, const AFigure *fig)
+bool Pawn::validMove(int x, int y)
 {
+	AFigure *fig = Game::getInstance()->getFig(x, y);
 	int direct = this->_label[0] == 'W' ? 1 : -1;
 	if (x == _posX && fig == nullptr)
 	{
