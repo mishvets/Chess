@@ -5,6 +5,6 @@ int main()
 {
 	Game	*chess = Game::getInstance();
 	chess->printBoard();
-
+	chess->saveGame();
 	return 0;
 }

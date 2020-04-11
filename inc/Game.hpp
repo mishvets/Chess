@@ -2,6 +2,7 @@
 #define CHESS_GAME_HPP
 
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <fstream>
 #include "AFigure.hpp"
@@ -25,7 +26,10 @@ public:
 	bool	loadGame();
 	bool	readFile(std::ifstream &file);
 	void 	printBoard();
+	void 	printUsage();
 	void 	userInput();
+	void	startGame();
+	void 	saveGame();
 
 	void	setFig(AFigure *fig, int posX, int posY);
 
@@ -40,6 +44,7 @@ private:
 //	std::array<Player *, 2>	_pl;
 //	std::array<AFigure *, _ySizeBoard, _xSizeBoard>	_board[_ySizeBoard][_xSizeBoard];
 	std::string _lastMove;
+	std::string _crntMove;
 
 	Game();
 };

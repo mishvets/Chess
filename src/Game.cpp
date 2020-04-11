@@ -15,18 +15,7 @@ Game::Game()
 	_pl[0] = new Player("W");
 	_pl[1] = new Player("B");
 
-	// init board
-//	_board = new AFigure**[_ySizeBoard];
-	for (int y = 0; y < _ySizeBoard; ++y) {
-//		_board[y] = new AFigure*[_xSizeBoard];
-		for (int x = 0; x < _xSizeBoard; ++x) {
-			_board[y][x] = nullptr;
-		}
-	}
-
-	//load game
-	if (!loadGame())
-		exit(1);
+	startGame();
 
 //	printBoard();
 
@@ -212,9 +201,93 @@ void Game::printBoard()
 
 void Game::userInput()
 {
-	std::string userInp;
-	std::getline(std::cin, userInp);
-	for (int i = 0; i < userInp.length(); ++i)
-		userInp[i] = ::tolower(userInp[i]);
-	std::cout << "Usage :"
+//	std::string userInp;
+	std::string cmnd;
+	std::string from;
+	std::string to;
+
+input:
+	std::cout << "Enter command: ";
+//	std::getline(std::cin, cmnd);
+	std::cin >> cmnd;
+	for (int i = 0; i < cmnd.length(); ++i)
+		cmnd[i] = ::tolower(cmnd[i]);
+	if (cmnd == "-m" || cmnd == "-move")
+	{
+		std::getline(std::cin, _crntMove);
+		return;
+	}
+	else if (cmnd == "-s" || cmnd == "-save")
+	{
+//		save();
+	}
+	else if (cmnd == "-r" || cmnd == "-restart")
+	{
+	confirm:
+		std::cout << "Are you sure you want to start a new game? Unsaved game will be lost." << std::endl;
+		std::cout << "Enter (y/n):" << std::endl;
+		std::cin >> cmnd;
+		for (int i = 0; i < cmnd.length(); ++i)
+			cmnd[i] = ::tolower(cmnd[i]);
+		if (cmnd == "y" || cmnd == "yes")
+		{
+			startGame();
+			return;
+		}
+		else if (cmnd == "n" || cmnd == "no")
+			goto input;
+		else
+			goto confirm;
+	}
+	else
+	{
+		printUsage();
+		goto input;
+	}
+}
+
+void Game::printUsage()
+{
+	std::cout << "Usage : [COMMAND]" << std::endl;
+	std::cout << "/t" << std::setw(45) << std::right << "-m [rowFrom] [colFrom] [rowTo] [colTo]" << "move figure;" << std::endl;
+	std::cout << "/t" << std::setw(45) << std::right << "-s" << "save this game;" << std::endl;
+	std::cout << "/t" << std::setw(45) << std::right << "-r" << "start new game;" << std::endl;
+	std::cout << "/t" << std::setw(45) << std::right << "-q" << "quit from game;" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Example : " << std::endl;
+	std::cout << "/t-m a4 b5" << std::endl;
+	std::cout << "/t-q" << std::endl;
+
+}
+
+void Game::startGame()
+{
+	// init board
+//	_board = new AFigure**[_ySizeBoard];
+	for (int y = 0; y < _ySizeBoard; ++y) {
+//		_board[y] = new AFigure*[_xSizeBoard];
+		for (int x = 0; x < _xSizeBoard; ++x) {
+			_board[y][x] = nullptr;
+		}
+	}
+
+	//load game
+	if (!loadGame())
+		exit(1);
+}
+
+void Game::saveGame()
+{
+	std::ofstream out("./GameBoard/load.game");
+	if (!out)
+	{
+		std::cout << "Can`t save current game" << std::endl;
+		return;
+	}
+	for (int y = 0; y < _ySizeBoard; ++y) {
+		for (int x = 0; x < _xSizeBoard; ++x) {
+			if (_board[y][x])
+				out << "1 " << getFig(x, y)->getLabel() << " " << x << " " << y << std::endl;
+		}
+	}
 }
