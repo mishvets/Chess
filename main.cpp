@@ -4,7 +4,11 @@
 int main()
 {
 	Game	*chess = Game::getInstance();
-	chess->printBoard();
-	chess->saveGame();
+	chess->startGame();
+	chess->runGame();
+
+	delete chess;
+//	system("valgrind --leak-check=yes ./chess");
 	return 0;
+
 }

@@ -19,7 +19,7 @@ Pawn &Pawn::operator=(const Pawn &src)
 bool Pawn::validMove(int x, int y, const AFigure *fig)
 {
 	int direct = this->_label[0] == 'W' ? 1 : -1;
-	if (!x && fig == nullptr)
+	if (x == _posX && fig == nullptr)
 	{
 		if (y == _posY + direct) // 1 step
 			return true;
@@ -56,9 +56,9 @@ bool Pawn::enPassant(int xNext)
 	{
 		lastMove = Game::getInstance()->getLastMove();
 		xLastMvFrom = (int)lastMove[0] - 97;
-		yLastMvFrom = (int)lastMove[1] - 1;
-		xLastMvTo = (int)lastMove[4] - 97;
-		yLastMvTo = (int)lastMove[5] - 1;
+		yLastMvFrom = (int)lastMove[1] - 49;
+		xLastMvTo = (int)lastMove[3] - 97;
+		yLastMvTo = (int)lastMove[4] - 49;
 		if (xNext == xLastMvTo && _posY == yLastMvTo) //last move have been near current pawn
 		{
 			fig = Game::getInstance()->getFig(xNext, _posY);

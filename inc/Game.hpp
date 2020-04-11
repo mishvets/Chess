@@ -22,16 +22,20 @@ public:
 
 	~Game();
 
-//	save
+	void	startGame();
 	bool	loadGame();
+	void	runGame();
+	void 	saveGame();
+	bool	userInput();
+	void	updateGame();
 	bool	readFile(std::ifstream &file);
 	void 	printBoard();
 	void 	printUsage();
-	void 	userInput();
-	void	startGame();
-	void 	saveGame();
+	int 	figStep(int from, int to);
+//	void 	strTrim(std::string *str);
 
 	void	setFig(AFigure *fig, int posX, int posY);
+	void	moveFig(int xFrom, int yFrom, int xTo, int yTo);
 
 	static Game			*getInstance();
 	AFigure				*getFig(int posX, int posY) const;
@@ -45,6 +49,7 @@ private:
 //	std::array<AFigure *, _ySizeBoard, _xSizeBoard>	_board[_ySizeBoard][_xSizeBoard];
 	std::string _lastMove;
 	std::string _crntMove;
+	std::string _errMsg;
 
 	Game();
 };

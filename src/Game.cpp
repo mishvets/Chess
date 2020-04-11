@@ -15,7 +15,7 @@ Game::Game()
 	_pl[0] = new Player("W");
 	_pl[1] = new Player("B");
 
-	startGame();
+//	startGame();
 
 //	printBoard();
 
@@ -33,7 +33,7 @@ Game::~Game()
 {
 	delete _pl[0];
 	delete _pl[1];
-	delete _instance;
+//	delete _instance;
 //	for (int y = 0; y < _ySizeBoard; y++) {
 //		delete _board[y];
 //	}
@@ -47,8 +47,6 @@ AFigure *Game::getFig(int posX, int posY) const
 
 void Game::setFig(AFigure *fig, int posX, int posY)
 {
-	fig->setPosX(posX);
-	fig->setPosY(posY);
 	_board[posY][posX] = fig;
 }
 
@@ -65,8 +63,8 @@ bool Game::loadGame()
 	system("clear");
 tryAgain:
 	std::cout << "Choose game: " << std::endl;
-	std::cout << "1. New game;" << std::endl;
-	std::cout << "2. Load game;" << std::endl;
+	std::cout << "\t1. New game;" << std::endl;
+	std::cout << "\t2. Load game;" << std::endl;
 	std::cout << "Game mod: " << std::endl;
 	std::getline(std::cin, gameMod);
 	for (int i = 0; i < gameMod.length(); ++i)
@@ -103,6 +101,10 @@ bool Game::readFile(std::ifstream &file)
 	int 		numPl;
 	AFigure		*fig;
 
+	std::getline(file, _lastMove);
+	if (_lastMove == "0")
+		_lastMove.clear();
+	_crntMove.clear();
 	while (file)
 	{
 		file >> active;
@@ -145,31 +147,33 @@ bool Game::readFile(std::ifstream &file)
 
 void Game::printBoard()
 {
-	system("clear");
-	std::cout << "   " ;
-	for (int x = 0; x < _xSizeBoard; ++x) {
-		std::cout << "   " << (char)(x + 97) << " ";
-	}
-	std::cout << std::endl;
-	std::cout << "    ———— ———— ———— ———— ———— ———— ———— ———— " << std::endl;
-
-	for (int y = 0; y < _ySizeBoard; ++y) {
-		std::cout << " " << y + 1 <<  " |";
+	if (_errMsg.empty())
+	{
+		system("clear");
+		std::cout << "   " ;
 		for (int x = 0; x < _xSizeBoard; ++x) {
-			if (_board[y][x])
-				std::cout << " " << _board[y][x]->getLabel() << " |";
-			else
-				std::cout << "    |";
+			std::cout << "   " << (char)(x + 97) << " ";
 		}
-		std::cout << " " << y + 1 << std::endl;
+		std::cout << std::endl;
 		std::cout << "    ———— ———— ———— ———— ———— ———— ———— ———— " << std::endl;
-	}
-	std::cout << "   " ;
-	for (int x = 0; x < _xSizeBoard; ++x) {
-		std::cout << "   " << (char)(x + 97) << " ";
-	}
-	std::cout << std::endl;
-	std::cout << std::endl;
+
+		for (int y = 0; y < _ySizeBoard; ++y) {
+			std::cout << " " << y + 1 <<  " |";
+			for (int x = 0; x < _xSizeBoard; ++x) {
+				if (_board[y][x])
+					std::cout << " " << _board[y][x]->getLabel() << " |";
+				else
+					std::cout << "    |";
+			}
+			std::cout << " " << y + 1 << std::endl;
+			std::cout << "    ———— ———— ———— ———— ———— ———— ———— ———— " << std::endl;
+		}
+		std::cout << "   " ;
+		for (int x = 0; x < _xSizeBoard; ++x) {
+			std::cout << "   " << (char)(x + 97) << " ";
+		}
+		std::cout << std::endl;
+		std::cout << std::endl;
 //	std::cout << std::endl;
 //	std::cout << " -----------------------" << std::endl;
 //	for (int y = 0; y < _ySizeBoard; ++y) {
@@ -197,33 +201,43 @@ void Game::printBoard()
 //		std::cout << std::endl;
 //		std::cout << " -------------------------------" << std::endl;
 //	}
+	} else
+	{
+		std::cout << _errMsg << std::endl;
+		_errMsg.clear();
+	}
+
 }
 
-void Game::userInput()
+bool Game::userInput()
 {
 //	std::string userInp;
 	std::string cmnd;
-	std::string from;
-	std::string to;
+//	std::string from;
+//	std::string to;
 
 input:
 	std::cout << "Enter command: ";
-//	std::getline(std::cin, cmnd);
-	std::cin >> cmnd;
+	std::getline(std::cin, cmnd);
+	_crntMove = cmnd.substr(cmnd.find(' ') + 1);
+	cmnd = cmnd.substr(0,cmnd.find(' '));
+//	std::cin >> cmnd;
 	for (int i = 0; i < cmnd.length(); ++i)
 		cmnd[i] = ::tolower(cmnd[i]);
 	if (cmnd == "-m" || cmnd == "-move")
 	{
-		std::getline(std::cin, _crntMove);
-		return;
+//		std::getline(std::cin, _crntMove);
+		if (_crntMove.length() == 5)
+			return true;
 	}
 	else if (cmnd == "-s" || cmnd == "-save")
 	{
-//		save();
+		saveGame();
+		goto input;
 	}
 	else if (cmnd == "-r" || cmnd == "-restart")
 	{
-	confirm:
+	confirmR:
 		std::cout << "Are you sure you want to start a new game? Unsaved game will be lost." << std::endl;
 		std::cout << "Enter (y/n):" << std::endl;
 		std::cin >> cmnd;
@@ -232,31 +246,45 @@ input:
 		if (cmnd == "y" || cmnd == "yes")
 		{
 			startGame();
-			return;
+			goto input;
 		}
 		else if (cmnd == "n" || cmnd == "no")
 			goto input;
 		else
-			goto confirm;
+			goto confirmR;
 	}
-	else
+	else if (cmnd == "-q" || cmnd == "-quit")
 	{
-		printUsage();
-		goto input;
+	confirmQ:
+		std::cout << "Are you sure you want quit from game? Unsaved game will be lost." << std::endl;
+		std::cout << "Enter (y/n):" << std::endl;
+		std::cin >> cmnd;
+		for (int i = 0; i < cmnd.length(); ++i)
+			cmnd[i] = ::tolower(cmnd[i]);
+		if (cmnd == "y" || cmnd == "yes")
+		{
+			return false;
+		}
+		else if (cmnd == "n" || cmnd == "no")
+			goto input;
+		else
+			goto confirmQ;
 	}
+	printUsage();
+	goto input;
 }
 
 void Game::printUsage()
 {
 	std::cout << "Usage : [COMMAND]" << std::endl;
-	std::cout << "/t" << std::setw(45) << std::right << "-m [rowFrom] [colFrom] [rowTo] [colTo]" << "move figure;" << std::endl;
-	std::cout << "/t" << std::setw(45) << std::right << "-s" << "save this game;" << std::endl;
-	std::cout << "/t" << std::setw(45) << std::right << "-r" << "start new game;" << std::endl;
-	std::cout << "/t" << std::setw(45) << std::right << "-q" << "quit from game;" << std::endl;
+	std::cout << "\t" << std::setw(45) << std::left << "-m [rowFrom][colFrom] [rowTo][colTo]" << "move figure;" << std::endl;
+	std::cout << "\t" << std::setw(45) << std::left << "-s" << "save this game;" << std::endl;
+	std::cout << "\t" << std::setw(45) << std::left << "-r" << "start new game;" << std::endl;
+	std::cout << "\t" << std::setw(45) << std::left << "-q" << "quit from game;" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Example : " << std::endl;
-	std::cout << "/t-m a4 b5" << std::endl;
-	std::cout << "/t-q" << std::endl;
+	std::cout << "\t-m a4 b5" << std::endl;
+	std::cout << "\t-q" << std::endl;
 
 }
 
@@ -274,6 +302,7 @@ void Game::startGame()
 	//load game
 	if (!loadGame())
 		exit(1);
+	printBoard();
 }
 
 void Game::saveGame()
@@ -284,10 +313,123 @@ void Game::saveGame()
 		std::cout << "Can`t save current game" << std::endl;
 		return;
 	}
+	if (!_lastMove.empty())
+		out << _lastMove << std::endl;
+	else
+		out << "0" << std::endl;
 	for (int y = 0; y < _ySizeBoard; ++y) {
 		for (int x = 0; x < _xSizeBoard; ++x) {
 			if (_board[y][x])
 				out << "1 " << getFig(x, y)->getLabel() << " " << x << " " << y << std::endl;
 		}
 	}
+	out.close();
+}
+
+void Game::runGame()
+{
+	while (userInput())
+	{
+//		userInput();
+		updateGame();
+		printBoard();
+	}
+//	AFigure *f = new Queen("d", 1, 1);
+}
+
+void Game::updateGame()
+{
+	AFigure				*enemy;
+	AFigure				*fig;
+	std::stringstream	buff;
+	int					xStep;
+	int					yStep;
+
+//	for (int i = 0; i < _crntMove.length(); ++i)
+//		_crntMove[i] = ::tolower(_crntMove[i]);
+	int crdMove[4] = {
+			_crntMove[0] - 97,
+			_crntMove[1] - 49 ,
+			_crntMove[3] - 97,
+			_crntMove[4] - 49
+	};
+//	int	xFrom = _crntMove[0] - 97;
+//	int yFrom = _crntMove[1];
+//	int	xTo = _crntMove[3] - 97;
+//	int yTo = _crntMove[4];
+	if (_crntMove[2] != ' ')
+	{
+		_errMsg = "Coordinates FROM and TO must be divided by space. Example: -m a4 b5";
+		return;
+	}
+	for (int j = 0; j < 4; ++j) {
+		if (crdMove[j] < 0 || crdMove[j] > 7)
+		{
+			_errMsg = "Bad coordinates: " + _crntMove;
+			return;
+		}
+	}
+	if (!(fig = getFig(crdMove[0], crdMove[1])))
+	{
+		_errMsg = "No figure on ceil: " + std::string(_crntMove, 0, 2);
+		return;
+	}
+	enemy = getFig(crdMove[2], crdMove[3]);
+	if (!fig->validMove(crdMove[2], crdMove[3], enemy))
+	{
+		_errMsg = "No valid move for " + fig->getLabel();
+		return;
+	}
+	// check pass
+	if (fig->getLabel()[1] != 'N')
+	{
+		xStep = figStep(crdMove[0], crdMove[2]);
+		yStep = figStep(crdMove[1], crdMove[3]);
+		for (int y = crdMove[1]; y < crdMove[3]; y += yStep) {
+			for (int x = crdMove[0]; x < crdMove[2]; x += xStep) {
+				if (getFig(x, y))
+				{
+					_errMsg = "Impossible move. On cell" + std::string(1, x + 97)
+							+ std::string(1, y + 49) + " there is another figure.";
+					return;
+				}
+			}
+		}
+	}
+//	if (!(enemy = getFig(crdMove[2], crdMove[3])))
+//	{
+//		moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
+////		_lastMove = std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49);
+//		buff << crdMove[0] + 48 << crdMove[1] + 48 << " " << crdMove[2] + 48 << crdMove[3] + 48;
+//	}
+	if (enemy && enemy->getLabel()[0] == fig->getLabel()[0])
+	{
+		_errMsg = "Impossible move. You can`t kick your own figure.";
+		return;
+	}
+	else if (enemy && enemy->getLabel()[0] != fig->getLabel()[0])
+	{
+		enemy->setActive(false);
+	}
+	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
+	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
+	std::getline(buff, _lastMove);
+}
+
+int Game::figStep(int from, int to)
+{
+	if (to == from)
+		return 0;
+	if (to < from)
+		return -1;
+	return 1;
+
+}
+
+void Game::moveFig(int xFrom, int yFrom, int xTo, int yTo)
+{
+	AFigure	*fig = getFig(xFrom, yFrom);
+	fig->move(xTo, yTo);
+	setFig(fig, xTo, yTo);
+	setFig(nullptr, xFrom, yFrom);
 }
