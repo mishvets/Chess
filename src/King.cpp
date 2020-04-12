@@ -19,13 +19,14 @@ King &King::operator=(const King &src)
 
 bool King::validMove(int x, int y)
 {
+	std::string label = getLabel()[0] == 'W' ? "WR" : "BR";
 	if (x - _posX == 2 && (_castling & (uint8_t)0b010) && _castling % 2) // short castling K -> R
 	{
 		for (int i = _posX + 1; i < 7; ++i) {
 			if (Game::getInstance()->getFig(i, _posY))
 				return false;
 		}
-		return true;
+		return (Game::getInstance()->getFig(7, _posY)->getLabel() == label);
 	}
 	if (_posX - x == 2 && (_castling & (uint8_t)0b100) && _castling % 2) // long castling R <- K
 	{
@@ -33,7 +34,7 @@ bool King::validMove(int x, int y)
 			if (Game::getInstance()->getFig(i, _posY))
 				return false;
 		}
-		return true;
+		return (Game::getInstance()->getFig(0, _posY)->getLabel() == label);
 	}
 	return (x - _posX == 0 || x - _posX == 1 || x - _posX == -1) &&
 		   (y - _posY == 0 || y - _posY == 1 || y - _posY == -1);

@@ -273,7 +273,7 @@ input:
 void Game::printUsage()
 {
 	std::cout << "Usage : [COMMAND]" << std::endl;
-	std::cout << "\t" << std::setw(45) << std::left << "-m [rowFrom][colFrom] [rowTo][colTo]" << "move figure;" << std::endl;
+	std::cout << "\t" << std::setw(45) << std::left << "-m [colFrom][rowFrom] [colTo][rowTo]" << "move figure;" << std::endl;
 	std::cout << "\t" << std::setw(45) << std::left << "-s" << "save this game;" << std::endl;
 	std::cout << "\t" << std::setw(45) << std::left << "-r" << "start new game;" << std::endl;
 	std::cout << "\t" << std::setw(45) << std::left << "-q" << "quit from game;" << std::endl;
@@ -345,18 +345,12 @@ void Game::updateGame()
 	int					xStep;
 	int					yStep;
 
-//	for (int i = 0; i < _crntMove.length(); ++i)
-//		_crntMove[i] = ::tolower(_crntMove[i]);
 	int crdMove[4] = {
 			_crntMove[0] - 97,
 			_crntMove[1] - 49 ,
 			_crntMove[3] - 97,
 			_crntMove[4] - 49
 	};
-//	int	xFrom = _crntMove[0] - 97;
-//	int yFrom = _crntMove[1];
-//	int	xTo = _crntMove[3] - 97;
-//	int yTo = _crntMove[4];
 	if (_crntMove[2] != ' ')
 	{
 		_errMsg = "Coordinates FROM and TO must be divided by space. Example: -m a4 b5";
@@ -394,7 +388,6 @@ void Game::updateGame()
 	{
 		xStep = figStep(crdMove[0], crdMove[2]);
 		yStep = figStep(crdMove[1], crdMove[3]);
-//		for (int y = crdMove[1]; y < crdMove[3]; y += yStep) {
 		for (int x = crdMove[0] + xStep, y = crdMove[1] + yStep; x < crdMove[2] && y < crdMove[3]; x += xStep,  y += yStep) {
 			if (getFig(x, y))
 			{
@@ -403,14 +396,7 @@ void Game::updateGame()
 				return;
 			}
 		}
-//		}
 	}
-//	if (!(enemy = getFig(crdMove[2], crdMove[3])))
-//	{
-//		moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
-////		_lastMove = std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49) + std::string(1, crdMove[0] + 49);
-//		buff << crdMove[0] + 48 << crdMove[1] + 48 << " " << crdMove[2] + 48 << crdMove[3] + 48;
-//	}
 	enemy = getFig(crdMove[2], crdMove[3]);
 	if (enemy && enemy->getLabel()[0] == fig->getLabel()[0])
 	{
@@ -418,9 +404,10 @@ void Game::updateGame()
 		return;
 	}
 	AFigure *king = _pl[_plIndx]->getKing();
-
+	setFig(fig, crdMove[2], crdMove[3]);
 	if (check(king)) // own King
 	{
+		setFig(enemy, crdMove[2], crdMove[3]);
 		if (!_pl[_plIndx]->isCheck())
 		{
 			_errMsg = "This move create check for your King. It`s forbidden";
@@ -435,8 +422,6 @@ void Game::updateGame()
 		if (inpt == "y" || inpt == "yes")
 		{
 			_win = "Checkmate for " + _pl[_plIndx]->getSide() + " side";
-//			_win += _pl[_plIndx]->getSide()[0];
-//			_win += " side";
 			return;
 		}
 		else if (inpt == "n" || inpt == "no")
@@ -445,23 +430,16 @@ void Game::updateGame()
 			goto check;
 
 	}
+	setFig(enemy, crdMove[2], crdMove[3]);
 	_pl[_plIndx]->setCheck(false);
 	if (enemy && enemy->getLabel()[0] != fig->getLabel()[0])
-	{
 		enemy->setActive(false);
-//		if (enemy->getLabel()[1] == 'K')
-//		{
-//			_win = "Checkmate for ";
-//			_win += enemy->getLabel()[0] == 'B'? "Black" : "White";
-//			_win += " side";
-//		}
-	}
 	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
 	if ((fig->getLabel() == "WP" && crdMove[3] == 7) || (fig->getLabel() == "BP" && crdMove[3] == 0))
 		promotion(fig);
 	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
 	std::getline(buff, _lastMove);
-	_plIndx = (_plIndx + 1) % 2;
+	_plIndx = (_plIndx + 1) % 2; //next player
 	if (check(_pl[_plIndx]->getKing())) // opposite King
 		_pl[_plIndx]->setCheck(true);
 }
@@ -518,7 +496,6 @@ choose:
 bool Game::check(AFigure *king)
 {
 	AFigure 			*fig;
-	AFigure				*tmp = getFig(_crntMove[3] - 97, _crntMove[4] - 49);
 	const std::string	side = king->getLabel();
 	int 				posX;
 	int 				posY;
@@ -529,7 +506,6 @@ bool Game::check(AFigure *king)
 	{
 		posX = _crntMove[3] - 97;
 		posY = _crntMove[4] - 49;
-		setFig(king, posX, posY);
 	}
 	else
 	{
@@ -556,10 +532,7 @@ bool Game::check(AFigure *king)
 				if (fig->getLabel()[0] != side[0])
 				{
 					if (fig->validMove(posX, posY))
-					{
-						setFig(tmp, _crntMove[3] - 97, _crntMove[4] - 49);
 						return true;
-					}
 					else
 						break;
 				}
@@ -568,21 +541,16 @@ bool Game::check(AFigure *king)
 			y += check[i][1];
 		}
 	}
+
 	for (int j = 0; j < 8; ++j) {
 		x = posX + checkN[j][0];
 		y = posY + checkN[j][1];
 		if (x >= 0 && x < 8 && y >= 0 && y < 8)
 		{
 			fig = getFig(x, y);
-			if (fig && fig->getLabel()[0] == side[0])
-				break;
-			if (fig && fig->getLabel()[0] != side[0])
-			{
-				setFig(tmp, _crntMove[3] - 97, _crntMove[4] - 49);
+			if (fig && fig->getLabel()[0] != side[0] && fig->getLabel()[1] == 'N')
 				return true;
-			}
 		}
 	}
-	setFig(tmp, _crntMove[3] - 97, _crntMove[4] - 49);
 	return false;
 }
