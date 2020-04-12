@@ -1,4 +1,5 @@
 #include "../inc/Pawn.hpp"
+#include "../inc/Game.hpp"
 
 Pawn::Pawn(const std::string &side, int posX, int posY) : AFigure(side, posX, posY)
 {

@@ -248,9 +248,7 @@ input:
 		for (int i = 0; i < cmnd.length(); ++i)
 			cmnd[i] = ::tolower(cmnd[i]);
 		if (cmnd == "y" || cmnd == "yes")
-		{
 			return false;
-		}
 		else if (cmnd == "n" || cmnd == "no")
 			goto input;
 		else
@@ -289,6 +287,7 @@ void Game::startGame()
 	if (!loadGame())
 		exit(1);
 	printBoard();
+	printUsage();
 }
 
 void Game::saveGame()
@@ -407,13 +406,14 @@ void Game::updateGame()
 		enemy->setActive(false);
 		if (enemy->getLabel()[1] == 'K')
 		{
-			_win = enemy->getLabel()[0] == 'B'? "White" : "Black";
-			_win += " side is win!";
+			_win = "Checkmate for ";
+			_win += enemy->getLabel()[0] == 'B'? "Black" : "White";
+			_win += " side";
 		}
 	}
 	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
 	if ((fig->getLabel() == "WP" && crdMove[3] == 7) || (fig->getLabel() == "BP" && crdMove[3] == 0))
-		promotion(nullptr);
+		promotion(fig);
 	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
 	std::getline(buff, _lastMove);
 	_plIndx = (_plIndx + 1) % 2;
@@ -440,18 +440,19 @@ void Game::promotion(AFigure *fig)
 {
 	std::string	inpt;
 	AFigure		*newFig;
-	std::cout << "/tK" << std::setw(5) << "promotion pawn to queen;" << std::endl;
-	std::cout << "/tN" << std::setw(5) << "promotion pawn to knight;" << std::endl;
-	std::cout << "/tR" << std::setw(5) << "promotion pawn to rook;" << std::endl;
-	std::cout << "/tB" << std::setw(5) << "promotion pawn to bishop." << std::endl;
+	std::cout << std::setw(5) << "Q" << "\tpromotion pawn to queen;" << std::endl;
+	std::cout << std::setw(5) << "N" << "\tpromotion pawn to knight;" << std::endl;
+	std::cout << std::setw(5) << "R" << "\tpromotion pawn to rook;" << std::endl;
+	std::cout << std::setw(5) << "B" << "\tpromotion pawn to bishop." << std::endl;
 choose:
 	std::cout << "Promotion! Choose new figure:" << std::endl;
 	std::getline(std::cin, inpt);
-	inpt[0] = ::tolower(inpt[0]);
-	if (inpt == "K" || inpt == "N" || inpt == "R" || inpt == "B")
+	inpt[0] = ::toupper(inpt[0]);
+	if (inpt == "Q" || inpt == "N" || inpt == "R" || inpt == "B")
 	{
 		newFig = _pl[_plIndx]->addNewFig(fig->getLabel()[0] + inpt, fig->getPosX(), fig->getPosY());
 		setFig(newFig, fig->getPosX(), fig->getPosY());
+		fig->setActive(false);
 	}
 	else
 	{

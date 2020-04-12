@@ -1,7 +1,6 @@
 #ifndef CHESS_AFIGURE_HPP
 #define CHESS_AFIGURE_HPP
 
-
 #include <iostream>
 
 class AFigure

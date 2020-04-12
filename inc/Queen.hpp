@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "AFigure.hpp"
-#include "Game.hpp"
+//#include "Game.hpp"
 
 class Queen : public AFigure
 {
