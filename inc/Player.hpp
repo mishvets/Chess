@@ -3,8 +3,13 @@
 
 #include <iostream>
 #include <vector>
-//#include <bits/shared_ptr.h>
 #include "AFigure.hpp"
+#include "King.hpp"
+#include "Bishop.hpp"
+#include "Knight.hpp"
+#include "Rook.hpp"
+#include "Queen.hpp"
+#include "Pawn.hpp"
 
 class Player
 {
@@ -13,7 +18,7 @@ public:
 	~Player();
 
 	const std::string &getSide() const;
-	void	addFig(AFigure *fig);
+	AFigure * addNewFig(const std::string &label, int posX, int posY);
 private:
 //	std::string _name;
 	std::string				_side;

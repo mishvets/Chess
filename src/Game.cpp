@@ -37,7 +37,7 @@ Game::~Game()
 //	for (int y = 0; y < _ySizeBoard; y++) {
 //		delete _board[y];
 //	}
-	std::cout << "* Game default destructor *" << std::endl;
+	std::cout << "* End Game *" << std::endl;
 }
 
 AFigure *Game::getFig(int posX, int posY) const
@@ -113,35 +113,11 @@ bool Game::readFile(std::ifstream &file)
 		file >> posX;
 		file >> posY;
 		numPl = label[0] == 'W'? 0 : 1;
-		if (active)
-		{
-			switch (label[1])
-			{
-				case 'P':
-					fig = new Pawn(label, posX, posY);
-					break;
-				case 'R':
-					fig = new Rook(label, posX, posY);
-					break;
-				case 'N':
-					fig = new Knight(label, posX, posY);
-					break;
-				case 'B':
-					fig = new Bishop(label, posX, posY);
-					break;
-				case 'Q':
-					fig = new Queen(label, posX, posY);
-					break;
-				case 'K':
-					fig = new King(label, posX, posY);
-					break;
-				default:
-					std::cout << "Error: Bad label in file" << std::endl;
-					return false;
-			}
-			_pl[numPl]->addFig(fig);
+//		if (active)
+//		{
+			fig = _pl[numPl]->addNewFig(label, posX, posY);
 			setFig(fig, posX, posY);
-		}
+//		}
 	}
 	return true;
 }
@@ -436,6 +412,8 @@ void Game::updateGame()
 		}
 	}
 	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
+	if ((fig->getLabel() == "WP" && crdMove[3] == 7) || (fig->getLabel() == "BP" && crdMove[3] == 0))
+		promotion(nullptr);
 	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
 	std::getline(buff, _lastMove);
 	_plIndx = (_plIndx + 1) % 2;
@@ -448,7 +426,6 @@ int Game::figStep(int from, int to)
 	if (to < from)
 		return -1;
 	return 1;
-
 }
 
 void Game::moveFig(int xFrom, int yFrom, int xTo, int yTo)
@@ -457,4 +434,28 @@ void Game::moveFig(int xFrom, int yFrom, int xTo, int yTo)
 	fig->move(xTo, yTo);
 	setFig(fig, xTo, yTo);
 	setFig(nullptr, xFrom, yFrom);
+}
+
+void Game::promotion(AFigure *fig)
+{
+	std::string	inpt;
+	AFigure		*newFig;
+	std::cout << "/tK" << std::setw(5) << "promotion pawn to queen;" << std::endl;
+	std::cout << "/tN" << std::setw(5) << "promotion pawn to knight;" << std::endl;
+	std::cout << "/tR" << std::setw(5) << "promotion pawn to rook;" << std::endl;
+	std::cout << "/tB" << std::setw(5) << "promotion pawn to bishop." << std::endl;
+choose:
+	std::cout << "Promotion! Choose new figure:" << std::endl;
+	std::getline(std::cin, inpt);
+	inpt[0] = ::tolower(inpt[0]);
+	if (inpt == "K" || inpt == "N" || inpt == "R" || inpt == "B")
+	{
+		newFig = _pl[_plIndx]->addNewFig(fig->getLabel()[0] + inpt, fig->getPosX(), fig->getPosY());
+		setFig(newFig, fig->getPosX(), fig->getPosY());
+	}
+	else
+	{
+		std::cout << "Bad input. Try again." << std::endl;
+		goto choose;
+	}
 }

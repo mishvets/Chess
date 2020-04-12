@@ -2,7 +2,7 @@
 
 AFigure::AFigure(const std::string &label, int posX, int posY) : _active(true), _label(label), _posX(posX), _posY(posY)
 {
-	std::cout << "* AFigure constructor *" << std::endl;
+//	std::cout << "* AFigure constructor *" << std::endl;
 }
 
 AFigure::AFigure(const AFigure &src)

@@ -7,12 +7,12 @@
 #include <fstream>
 #include "AFigure.hpp"
 #include "Player.hpp"
-#include "King.hpp"
-#include "Bishop.hpp"
-#include "Knight.hpp"
-#include "Rook.hpp"
-#include "Queen.hpp"
-#include "Pawn.hpp"
+//#include "King.hpp"
+//#include "Bishop.hpp"
+//#include "Knight.hpp"
+//#include "Rook.hpp"
+//#include "Queen.hpp"
+//#include "Pawn.hpp"
 
 class Game
 {
@@ -31,6 +31,7 @@ public:
 	bool	readFile(std::ifstream &file);
 	void 	printBoard();
 	void 	printUsage();
+	void	promotion(AFigure *fig);
 	int 	figStep(int from, int to);
 //	void 	strTrim(std::string *str);
 
