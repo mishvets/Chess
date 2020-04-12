@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include <fstream>
+//#include <bitset>
 #include "AFigure.hpp"
 #include "Player.hpp"
 //#include "King.hpp"
@@ -32,6 +33,7 @@ public:
 	void 	printBoard();
 	void 	printUsage();
 	void	promotion(AFigure *fig);
+	bool	check(AFigure *king);
 	int 	figStep(int from, int to);
 //	void 	strTrim(std::string *str);
 

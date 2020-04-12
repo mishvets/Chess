@@ -1,6 +1,6 @@
 #include "../inc/Player.hpp"
 
-Player::Player(const std::string &side) : _side(side)
+Player::Player(const std::string &side) : _side(side), _check(false), _castling(0b111)
 {
 //	std::shared_ptr<AFigure> ptr(p);
 //	int y = _side == "W" ? 1 : 6;
@@ -36,7 +36,8 @@ AFigure *Player::addNewFig(const std::string &label, int posX, int posY)
 			fig = new Queen(label, posX, posY);
 			break;
 		case 'K':
-			fig = new King(label, posX, posY);
+			_king = new King(label, posX, posY);
+			fig = _king;
 			break;
 		default:
 			std::cout << "Error: Bad label in file" << std::endl;
@@ -50,4 +51,20 @@ const std::string &Player::getSide() const
 {
 	return _side;
 }
+
+King *Player::getKing() const
+{
+	return _king;
+}
+
+bool Player::isCheck() const
+{
+	return _check;
+}
+
+void Player::setCheck(bool check)
+{
+	_check = check;
+}
+
 

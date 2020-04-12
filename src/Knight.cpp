@@ -18,15 +18,9 @@ Knight &Knight::operator=(const Knight &src)
 
 bool Knight::validMove(int x, int y)
 {
-	int var[][2]={
-			{1,-2},
-			{2,-1},
-			{2,1},
-			{1,2},
-			{-1,2},
-			{-2,1},
-			{-2,-1},
-			{-1,-2}};
+	int var[][2] = {
+			{1,-2}, {2,-1}, {2,1}, {1,2},
+			{-1,2}, {-2,1}, {-2,-1}, {-1,-2}};
 	for (int i = 0; i < 8; ++i) {
 		if (_posX + var[i][0] == x && _posY + var[i][1] == y)
 			return true;

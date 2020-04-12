@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "AFigure.hpp"
-//#include "Game.hpp"
 
 class Rook : public AFigure
 {
@@ -14,6 +13,7 @@ public:
 
 	bool validMove(int x, int y);
 	void	move(int x, int y);
+
 };
 
 

@@ -12,8 +12,15 @@ public:
 	King(const King &src);
 	King &operator=(const King &src);
 
-	bool validMove(int x, int y);
+	bool	validMove(int x, int y);
 	void	move(int x, int y);
+
+	unsigned int	getCastling() const;
+	void 			setCastling(unsigned int castling);
+
+private:
+	unsigned int 	_castling;	//0b111
+
 };
 
 

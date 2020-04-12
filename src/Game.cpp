@@ -94,18 +94,26 @@ tryAgain:
 
 bool Game::readFile(std::ifstream &file)
 {
-	int			active;
-	std::string	label;
-	int 		posX;
-	int 		posY;
-	int 		numPl;
-	AFigure		*fig;
+	int				active;
+	std::string		label;
+	int 			posX;
+	int 			posY;
+	int 			numPl;
+	bool 			check;
+	unsigned int	castling[2];
+	AFigure			*fig;
 
 	std::getline(file, _lastMove);
 	if (_lastMove == "0")
 		_lastMove.clear();
 	_crntMove.clear();
 	file >> _plIndx;
+	for (int i = 0; i < 2; ++i) {
+		file >> check;
+		_pl[i]->setCheck(check);
+		file >> castling[i];
+//		_pl[i]->getKing()->setCastling(castling);
+	}
 	while (file)
 	{
 		file >> active;
@@ -119,6 +127,8 @@ bool Game::readFile(std::ifstream &file)
 			setFig(fig, posX, posY);
 //		}
 	}
+	_pl[0]->getKing()->setCastling(castling[0]);
+	_pl[1]->getKing()->setCastling(castling[1]);
 	return true;
 }
 
@@ -158,6 +168,8 @@ void Game::printBoard()
 		std::cout << std::endl;
 		std::cout << "                   B L A C K" << std::endl;
 		std::cout << std::endl;
+		if (_pl[_plIndx]->isCheck())
+			std::cout << "Check for " << _pl[_plIndx]->getSide() << " King" << std::endl;
 //	std::cout << std::endl;
 //	std::cout << " -----------------------" << std::endl;
 //	for (int y = 0; y < _ySizeBoard; ++y) {
@@ -303,6 +315,9 @@ void Game::saveGame()
 	else
 		out << "0" << std::endl;
 	out << _plIndx << std::endl;
+	for (int i = 0; i < 2; ++i) {
+		out << _pl[i]->isCheck() << " " <<_pl[i]->getKing()->getCastling() << std::endl;
+	}
 	for (int y = 0; y < _ySizeBoard; ++y) {
 		for (int x = 0; x < _xSizeBoard; ++x) {
 			if (_board[y][x])
@@ -326,6 +341,7 @@ void Game::updateGame()
 	AFigure				*enemy;
 	AFigure				*fig;
 	std::stringstream	buff;
+	std::string			inpt;
 	int					xStep;
 	int					yStep;
 
@@ -401,15 +417,44 @@ void Game::updateGame()
 		_errMsg = "Impossible move. You can`t kick your own figure.";
 		return;
 	}
-	else if (enemy && enemy->getLabel()[0] != fig->getLabel()[0])
+	AFigure *king = _pl[_plIndx]->getKing();
+
+	if (check(king)) // own King
+	{
+		if (!_pl[_plIndx]->isCheck())
+		{
+			_errMsg = "This move create check for your King. It`s forbidden";
+			return;
+		}
+	check:
+		std::cout << "Check for your King. Save the king or accept defeat!" << std::endl;
+		std::cout << "Give up (y/n): " << std::endl;
+		std::getline(std::cin, inpt);
+		for (int i = 0; i < inpt.length(); ++i)
+			inpt[i] = ::tolower(inpt[i]);
+		if (inpt == "y" || inpt == "yes")
+		{
+			_win = "Checkmate for " + _pl[_plIndx]->getSide() + " side";
+//			_win += _pl[_plIndx]->getSide()[0];
+//			_win += " side";
+			return;
+		}
+		else if (inpt == "n" || inpt == "no")
+			return;
+		else
+			goto check;
+
+	}
+	_pl[_plIndx]->setCheck(false);
+	if (enemy && enemy->getLabel()[0] != fig->getLabel()[0])
 	{
 		enemy->setActive(false);
-		if (enemy->getLabel()[1] == 'K')
-		{
-			_win = "Checkmate for ";
-			_win += enemy->getLabel()[0] == 'B'? "Black" : "White";
-			_win += " side";
-		}
+//		if (enemy->getLabel()[1] == 'K')
+//		{
+//			_win = "Checkmate for ";
+//			_win += enemy->getLabel()[0] == 'B'? "Black" : "White";
+//			_win += " side";
+//		}
 	}
 	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
 	if ((fig->getLabel() == "WP" && crdMove[3] == 7) || (fig->getLabel() == "BP" && crdMove[3] == 0))
@@ -417,6 +462,8 @@ void Game::updateGame()
 	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
 	std::getline(buff, _lastMove);
 	_plIndx = (_plIndx + 1) % 2;
+	if (check(_pl[_plIndx]->getKing())) // opposite King
+		_pl[_plIndx]->setCheck(true);
 }
 
 int Game::figStep(int from, int to)
@@ -434,6 +481,13 @@ void Game::moveFig(int xFrom, int yFrom, int xTo, int yTo)
 	fig->move(xTo, yTo);
 	setFig(fig, xTo, yTo);
 	setFig(nullptr, xFrom, yFrom);
+	if (fig->getLabel()[1] == 'R')
+	{
+		if (xFrom == 7)
+			_pl[_plIndx]->getKing()->setCastling(0b101);
+		else if (xFrom == 0)
+			_pl[_plIndx]->getKing()->setCastling(0b011);
+	}
 }
 
 void Game::promotion(AFigure *fig)
@@ -459,4 +513,76 @@ choose:
 		std::cout << "Bad input. Try again." << std::endl;
 		goto choose;
 	}
+}
+
+bool Game::check(AFigure *king)
+{
+	AFigure 			*fig;
+	AFigure				*tmp = getFig(_crntMove[3] - 97, _crntMove[4] - 49);
+	const std::string	side = king->getLabel();
+	int 				posX;
+	int 				posY;
+	int 				x;
+	int 				y;
+
+	if (_crntMove[0] - 97 == king->getPosX() && _crntMove[1] - 49 == king->getPosY())
+	{
+		posX = _crntMove[3] - 97;
+		posY = _crntMove[4] - 49;
+		setFig(king, posX, posY);
+	}
+	else
+	{
+		posX = king->getPosX();
+		posY = king->getPosY();
+	}
+	int check[][2] = {
+			{0, 1}, {0, -1}, {1, 0}, {-1, 0}, // +
+			{1, 1}, {-1, -1}, {1, -1}, {-1, 1}}; // x
+	int checkN[][2] = {
+			{1,-2}, {2,-1}, {2,1}, {1,2},
+			{-1,2}, {-2,1}, {-2,-1}, {-1,-2}};
+
+	for (int i = 0; i < 8; ++i) {
+		x = posX + check[i][0];
+		y = posY + check[i][1];
+		while (x >= 0 && x < 8 && y >= 0 && y < 8)
+		{
+			fig = getFig(x, y);
+			if (fig)
+			{
+				if (fig->getLabel()[0] == side[0])
+					break;
+				if (fig->getLabel()[0] != side[0])
+				{
+					if (fig->validMove(posX, posY))
+					{
+						setFig(tmp, _crntMove[3] - 97, _crntMove[4] - 49);
+						return true;
+					}
+					else
+						break;
+				}
+			}
+			x += check[i][0];
+			y += check[i][1];
+		}
+	}
+	for (int j = 0; j < 8; ++j) {
+		x = posX + checkN[j][0];
+		y = posY + checkN[j][1];
+		if (x >= 0 && x < 8 && y >= 0 && y < 8)
+		{
+			fig = getFig(x, y);
+			if (fig && fig->getLabel()[0] == side[0])
+				break;
+			if (fig && fig->getLabel()[0] != side[0])
+			{
+				setFig(tmp, _crntMove[3] - 97, _crntMove[4] - 49);
+				return true;
+			}
+		}
+	}
+	setFig(tmp, _crntMove[3] - 97, _crntMove[4] - 49);
+	return false;
 }
