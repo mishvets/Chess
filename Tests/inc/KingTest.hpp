@@ -12,6 +12,7 @@ public:
 	~KingTest();
 	void testValidMove();
 	void testValidMoveCastling();
+	void testCheck();
 
 	int getTestOk() const;
 	int getTestKo() const;

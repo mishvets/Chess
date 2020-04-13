@@ -399,6 +399,7 @@ void Game::moveFig(int xFrom, int yFrom, int xTo, int yTo)
 	AFigure	*fig = getFig(xFrom, yFrom);
 	fig->move(xTo, yTo);
 	setFig(fig, xTo, yTo);
+	if (xFrom != xTo || yFrom != yTo)
 	setFig(nullptr, xFrom, yFrom);
 	if (fig->getLabel()[1] == 'R')
 	{

@@ -41,6 +41,7 @@ int main ()
 	std::cout << "KingTest" << std::endl;
 	kingTest.testValidMove();
 	kingTest.testValidMoveCastling();
+	kingTest.testCheck();
 
 	delete Game::getInstance();
 	return 0;
