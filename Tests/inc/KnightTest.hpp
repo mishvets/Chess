@@ -16,8 +16,8 @@ public:
 
 private:
 	Knight	*_knight;
-	int		_testOK;
 	int		_testKO;
+	int		_testOK;
 
 };
 

@@ -16,8 +16,8 @@ public:
 
 private:
 	Rook	*_rook;
-	int		_testOK;
 	int		_testKO;
+	int		_testOK;
 
 };
 

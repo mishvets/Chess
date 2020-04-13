@@ -16,8 +16,8 @@ public:
 
 private:
 	Pawn	*_pawn;
-	int		_testOK;
 	int		_testKO;
+	int		_testOK;
 
 };
 

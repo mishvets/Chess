@@ -16,8 +16,8 @@ public:
 
 private:
 	Queen	*_queen;
-	int		_testOK;
 	int		_testKO;
+	int		_testOK;
 
 };
 

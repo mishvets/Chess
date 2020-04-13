@@ -16,8 +16,8 @@ public:
 
 private:
 	King	*_king;
-	int		_testOK;
 	int		_testKO;
+	int		_testOK;
 
 };
 

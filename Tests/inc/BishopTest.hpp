@@ -16,8 +16,8 @@ public:
 
 private:
 	Bishop	*_bishop;
-	int		_testOK;
 	int		_testKO;
+	int		_testOK;
 
 };
 
