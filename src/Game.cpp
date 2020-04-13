@@ -330,7 +330,7 @@ void Game::updateGame()
 	{
 		xStep = figStep(crdMove[0], crdMove[2]);
 		yStep = figStep(crdMove[1], crdMove[3]);
-		for (int x = crdMove[0] + xStep, y = crdMove[1] + yStep; x < crdMove[2] && y < crdMove[3]; x += xStep,  y += yStep) {
+		for (int x = crdMove[0] + xStep, y = crdMove[1] + yStep; x != crdMove[2] && y != crdMove[3]; x += xStep,  y += yStep) {
 			if (getFig(x, y))
 			{
 				_errMsg = "Impossible move. On cell " + std::string(1, x + 97)
