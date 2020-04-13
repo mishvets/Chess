@@ -4,22 +4,21 @@ NAME		:= unitTest
 
 # project directories
 
-SRC_DIR     = ../src/
+SRC_DIR          = ../src/
 SRC_DIR_TEST     = ./src/
-OBJ_DIR     = ./obj/
-
-INC_DIR     = ./inc/
-LIB_DIR     = ./
+OBJ_DIR          = ./obj/
+INC_DIR          = ./inc/
+LIB_DIR          = ./
 
 # project source files
 
-SRC_T             := $(SRC_DIR_TEST)main.cpp
-SRC_T             += $(SRC_DIR_TEST)BishopTest.cpp
-SRC_T             += $(SRC_DIR_TEST)KingTest.cpp
-SRC_T             += $(SRC_DIR_TEST)KnightTest.cpp
-SRC_T             += $(SRC_DIR_TEST)PawnTest.cpp
-SRC_T             += $(SRC_DIR_TEST)QueenTest.cpp
-SRC_T             += $(SRC_DIR_TEST)RookTest.cpp
+SRC_T           := $(SRC_DIR_TEST)main.cpp
+SRC_T           += $(SRC_DIR_TEST)BishopTest.cpp
+SRC_T           += $(SRC_DIR_TEST)KingTest.cpp
+SRC_T           += $(SRC_DIR_TEST)KnightTest.cpp
+SRC_T           += $(SRC_DIR_TEST)PawnTest.cpp
+SRC_T           += $(SRC_DIR_TEST)QueenTest.cpp
+SRC_T           += $(SRC_DIR_TEST)RookTest.cpp
 SRC             := $(SRC_DIR)AFigure.cpp
 SRC             += $(SRC_DIR)Bishop.cpp
 SRC             += $(SRC_DIR)Game.cpp
@@ -33,7 +32,7 @@ SRC             += $(SRC_DIR)Rook.cpp
 
 # project object files
 
-OBJ_T		        = $(SRC_T:$(SRC_DIR_TEST)%.cpp=$(OBJ_DIR)%.o)
+OBJ_T		    = $(SRC_T:$(SRC_DIR_TEST)%.cpp=$(OBJ_DIR)%.o)
 OBJ		        = $(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
 
