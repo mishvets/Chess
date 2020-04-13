@@ -88,7 +88,44 @@ void KingTest::testValidMoveCastling()
 			}
 		}
 	}
-
+	castling = 0b011;
+	res[2] = 0;
+	for (int yInp = 0, i = 0; yInp <= 1; ++yInp) {
+		for (int xInp = 0; xInp <= 7; ++xInp) {
+			_king->setStartCastling(castling);
+			if (yInp != 0 || xInp != 4)
+			{
+				if (res[i++] == _king->validMove(xInp, yInp))
+					testOK++;
+				else
+				{
+					testKO++;
+					std::cout << testKO << ". testValidMove (castling) - KO: from - " << (char)(posX + 97) << posY + 1
+							  << " to - " << (char)(xInp + 97) << yInp + 1
+							  << " castling - "<< std::bitset<4>(castling) << std::endl;
+				}
+			}
+		}
+	}
+	castling = 0b110;
+	res[5] = 0;
+	for (int yInp = 0, i = 0; yInp <= 1; ++yInp) {
+		for (int xInp = 0; xInp <= 7; ++xInp) {
+			_king->setStartCastling(castling);
+			if (yInp != 0 || xInp != 4)
+			{
+				if (res[i++] == _king->validMove(xInp, yInp))
+					testOK++;
+				else
+				{
+					testKO++;
+					std::cout << testKO << ". testValidMove (castling) - KO: from - " << (char)(posX + 97) << posY + 1
+							  << " to - " << (char)(xInp + 97) << yInp + 1
+							  << " castling - "<< std::bitset<4>(castling) << std::endl;
+				}
+			}
+		}
+	}
 	std::cout << "TestValidMoveCastling: OK - " << testOK << ", KO - " << testKO << std::endl;
 	std::cout << std::endl;
 	_testKO += testKO;
