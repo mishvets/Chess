@@ -8,7 +8,6 @@ int main()
 	chess->runGame();
 
 	delete chess;
-//	system("valgrind --leak-check=yes ./chess");
 	return 0;
 
 }
