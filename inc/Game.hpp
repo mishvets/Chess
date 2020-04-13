@@ -35,7 +35,7 @@ public:
 	void	promotion(AFigure *fig);
 	bool	check(AFigure *king);
 	int 	figStep(int from, int to);
-//	void 	strTrim(std::string *str);
+	void 	cleanBoard();
 
 	void	setFig(AFigure *fig, int posX, int posY);
 	void	moveFig(int xFrom, int yFrom, int xTo, int yTo);

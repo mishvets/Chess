@@ -15,33 +15,13 @@ Game::Game() : _plIndx(0)
 	_pl[0] = new Player("White");
 	_pl[1] = new Player("Black");
 
-	for (int y = 0; y < _ySizeBoard; ++y) {
-		for (int x = 0; x < _xSizeBoard; ++x) {
-			_board[y][x] = nullptr;
-		}
-	}
-//	startGame();
-
-//	printBoard();
-
-	//нанесение на доску
-//	for (int i = 0; i < 16; ++i) {
-//		for (int j = 0; j < 2; ++j) {
-//			_board[_pl[j]->_figVct[i]->getPosY()][_pl[j]->_figVct[i]->getPosX()] = _pl[j]->_figVct[i];
-//		}
-//	}
-
-
+	cleanBoard();
 }
 
 Game::~Game()
 {
 	delete _pl[0];
 	delete _pl[1];
-//	delete _instance;
-//	for (int y = 0; y < _ySizeBoard; y++) {
-//		delete _board[y];
-//	}
 	std::cout << "* End Game *" << std::endl;
 }
 
@@ -117,7 +97,6 @@ bool Game::readFile(std::ifstream &file)
 		file >> check;
 		_pl[i]->setCheck(check);
 		file >> castling[i];
-//		_pl[i]->getKing()->setCastling(castling);
 	}
 	while (file)
 	{
@@ -126,11 +105,8 @@ bool Game::readFile(std::ifstream &file)
 		file >> posX;
 		file >> posY;
 		numPl = label[0] == 'W'? 0 : 1;
-//		if (active)
-//		{
-			fig = _pl[numPl]->addNewFig(label, posX, posY);
-			setFig(fig, posX, posY);
-//		}
+		fig = _pl[numPl]->addNewFig(label, posX, posY);
+		setFig(fig, posX, posY);
 	}
 	_pl[0]->getKing()->setCastling(castling[0]);
 	_pl[1]->getKing()->setCastling(castling[1]);
@@ -175,35 +151,7 @@ void Game::printBoard()
 		std::cout << std::endl;
 		if (_pl[_plIndx]->isCheck())
 			std::cout << "Check for " << _pl[_plIndx]->getSide() << " King" << std::endl;
-//	std::cout << std::endl;
-//	std::cout << " -----------------------" << std::endl;
-//	for (int y = 0; y < _ySizeBoard; ++y) {
-//		std::cout << "|";
-//		for (int x = 0; x < _xSizeBoard; ++x) {
-//			if (_board[y][x])
-//				std::cout << _board[y][x]->getLabel() << "|";
-//			else
-//				std::cout << "  |";
-//		}
-//		std::cout << std::endl;
-//		std::cout << " -----------------------" << std::endl;
-//	}
-//	std::cout << std::endl;
-//	std::cout << std::endl;
-//	std::cout << " -------------------------------" << std::endl;
-//	for (int y = 0; y < _ySizeBoard; ++y) {
-//		std::cout << "|";
-//		for (int x = 0; x < _xSizeBoard; ++x) {
-//			if (_board[y][x])
-//				std::cout << _board[y][x]->getLabel()[0] << " " << _board[y][x]->getLabel()[1] << "|";
-//			else
-//				std::cout << "   |";
-//		}
-//		std::cout << std::endl;
-//		std::cout << " -------------------------------" << std::endl;
-//	}
 	}
-
 	else
 	{
 		std::cout << _errMsg << std::endl;
@@ -214,22 +162,17 @@ void Game::printBoard()
 
 bool Game::userInput()
 {
-//	std::string userInp;
 	std::string cmnd;
-//	std::string from;
-//	std::string to;
 
 input:
 	std::cout << "<" << _pl[_plIndx]->getSide() <<"> Enter command: ";
 	std::getline(std::cin, cmnd);
 	_crntMove = cmnd.substr(cmnd.find(' ') + 1);
 	cmnd = cmnd.substr(0,cmnd.find(' '));
-//	std::cin >> cmnd;
 	for (int i = 0; i < cmnd.length(); ++i)
 		cmnd[i] = ::tolower(cmnd[i]);
 	if (cmnd == "-m" || cmnd == "-move")
 	{
-//		std::getline(std::cin, _crntMove);
 		if (_crntMove.length() == 5)
 			return true;
 	}
@@ -292,13 +235,7 @@ void Game::printUsage()
 void Game::startGame()
 {
 	// init board
-//	_board = new AFigure**[_ySizeBoard];
-	for (int y = 0; y < _ySizeBoard; ++y) {
-//		_board[y] = new AFigure*[_xSizeBoard];
-		for (int x = 0; x < _xSizeBoard; ++x) {
-			_board[y][x] = nullptr;
-		}
-	}
+	cleanBoard();
 
 	//load game
 	if (!loadGame())
@@ -433,14 +370,13 @@ void Game::updateGame()
 			return;
 		else
 			goto check;
-
 	}
 	setFig(enemy, crdMove[2], crdMove[3]);
 	_pl[_plIndx]->setCheck(false);
-	if (enemy && enemy->getLabel()[0] != fig->getLabel()[0])
+	if (enemy && enemy->getLabel()[0] != fig->getLabel()[0]) // kill enemy
 		enemy->setActive(false);
 	moveFig(crdMove[0], crdMove[1], crdMove[2], crdMove[3]);
-	if ((fig->getLabel() == "WP" && crdMove[3] == 7) || (fig->getLabel() == "BP" && crdMove[3] == 0))
+	if ((fig->getLabel() == "WP" && crdMove[3] == 7) || (fig->getLabel() == "BP" && crdMove[3] == 0)) // promotion
 		promotion(fig);
 	buff << (char)(crdMove[0] + 97) << crdMove[1] + 1 << " " << (char)(crdMove[2] + 97) << crdMove[3] + 1;
 	std::getline(buff, _lastMove);
@@ -558,4 +494,13 @@ bool Game::check(AFigure *king)
 		}
 	}
 	return false;
+}
+
+void Game::cleanBoard()
+{
+	for (int y = 0; y < _ySizeBoard; ++y) {
+		for (int x = 0; x < _xSizeBoard; ++x) {
+			_board[y][x] = nullptr;
+		}
+	}
 }
