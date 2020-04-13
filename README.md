@@ -39,7 +39,7 @@ Then the game board and a list of available commands will be displayed.
       a    b    c    d    e    f    g    h
                    B L A C K
 ```
-##### List of command
+##### List of commands
 ```
 Usage : [COMMAND]
         -m [colFrom][rowFrom] [colTo][rowTo]         move figure;
@@ -54,7 +54,7 @@ Example:
 2. For **castling**, it is necessary that the king and the tour do not move before that and there are no figures between them. 
 Then for a long castling white figures:
 `-m e1 c1`, for short castling: `-m e1 g1`
-3. **En passant** - it is a special pawn capture that can only occur immediately after a pawn makes a move of two squares from its starting square, and it could have been captured by an enemy pawn had it advanced only one square. The opponent captures the just-moved pawn "as it passes" through the first square. The result is the same as if the pawn had advanced only one square and the enemy pawn had captured it normally.
+3. **En passant** - it is a special pawn capture that can only occur immediately after a pawn makes a move of two squares from its starting square, and it could have been captured by an enemy pawn had it advanced only one square. The opponent captures the just-moved pawn "as it passes" through the first square. The result is the same as if the pawn had advanced only one square and the enemy pawn had captured it normally: `-m b5 a6`
 ````
                    W H I T E
         a    b    c    d    e    f    g    h
