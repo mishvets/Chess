@@ -32,7 +32,7 @@ void PawnTest::testValidMove()
 				else
 				{
 					testKO++;
-					std::cout << testKO << ". testValidMove - KO: from - " << (char)(posX + 97) << posY + 1
+					std::cout << testKO << ". testValidMove(typical move) - KO: from - " << (char)(posX + 97) << posY + 1
 										<< " to - " << (char)(xInp + 97) << yInp + 1 << " label - " << _pawn->getLabel()
 										<< std::endl;
 				}
@@ -56,7 +56,7 @@ void PawnTest::testValidMove()
 					testKO++;
 					fig = Game::getInstance()->getFig(xInp, yInp);
 					str = fig ? fig->getLabel() : "none";
-					std::cout << testKO << ". testValidMove - KO: from - " << (char)(posX + 97) << posY + 1
+					std::cout << testKO << ". testValidMove(kick move) - KO: from - " << (char)(posX + 97) << posY + 1
 										<< " to - " << (char)(xInp + 97) << yInp + 1 << " label - " << _pawn->getLabel()
 										<< " enemy - " << str << std::endl;
 				}
@@ -77,7 +77,7 @@ void PawnTest::testValidMove()
 					testKO++;
 					fig = Game::getInstance()->getFig(xInp, yInp);
 					str = fig ? fig->getLabel() : "none";
-					std::cout << testKO << ". testValidMove - KO: from - " << (char) (posX + 97) << posY + 1
+					std::cout << testKO << ". testValidMove(kick move) - KO: from - " << (char) (posX + 97) << posY + 1
 							  << " to - " << (char) (xInp + 97) << yInp + 1 << " label - " << _pawn->getLabel()
 							  << " enemy - " << str << std::endl;
 				}

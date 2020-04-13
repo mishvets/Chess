@@ -3,9 +3,6 @@
 
 #include <iostream>
 #include "AFigure.hpp"
-//#include "Game.hpp"
-
-//class Game;
 
 class Pawn : public AFigure
 {

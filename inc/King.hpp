@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "AFigure.hpp"
-//#include "Game.hpp"
 
 class King : public AFigure
 {
