@@ -18,6 +18,7 @@ void PawnTest::testValidMove()
 	_pawn->setPosX(posX);
 	_pawn->setPosY(posY);
 	_pawn->setLabel("BP");
+	Game::getInstance()->cleanBoard();
 	int res[] = {0, 0, 1, 0, 0,
 				 0, 0, 1, 0, 0,
 				 0, 0,    0, 0,
@@ -104,3 +105,5 @@ PawnTest::~PawnTest()
 {
 	delete _pawn;
 }
+
+

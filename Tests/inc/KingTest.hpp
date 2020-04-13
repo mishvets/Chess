@@ -2,6 +2,7 @@
 #define CHESS_KINGTEST_HPP
 
 #include <iostream>
+#include <bitset>
 #include "../../inc/King.hpp"
 
 class KingTest
@@ -10,6 +11,7 @@ public:
 	KingTest();
 	~KingTest();
 	void testValidMove();
+	void testValidMoveCastling();
 
 	int getTestOk() const;
 	int getTestKo() const;

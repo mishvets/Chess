@@ -5,9 +5,11 @@
 #include "../inc/BishopTest.hpp"
 #include "../inc/KnightTest.hpp"
 #include "../inc/KingTest.hpp"
+#include "../../inc/Game.hpp"
 
 int main ()
 {
+	Game::getInstance();
 	QueenTest	queenTest;
 	PawnTest	pawnTest;
 	RookTest	rookTest;
@@ -27,5 +29,8 @@ int main ()
 	knightTest.testValidMove();
 	std::cout << "KingTest" << std::endl;
 	kingTest.testValidMove();
+	kingTest.testValidMoveCastling();
+
+	delete Game::getInstance();
 	return 0;
 }

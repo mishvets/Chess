@@ -16,6 +16,7 @@ public:
 
 	unsigned int	getCastling() const;
 	void 			setCastling(unsigned int castling);
+	void 			setStartCastling(unsigned int castling);
 
 private:
 	unsigned int 	_castling;	//0b111
