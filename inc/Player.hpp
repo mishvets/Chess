@@ -25,14 +25,10 @@ public:
 	AFigure		*addNewFig(const std::string &label, int posX, int posY);
 
 private:
-//	std::string _name;
 	std::string				_side;
 	King					*_king;
-	int						_castling; //0b111
 	std::vector<AFigure *>	_figVct;
 	bool 					_check;
-	//std::shared_ptr
-//	AFigure		_figVct[16];
 
 };
 

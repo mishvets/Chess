@@ -8,12 +8,6 @@
 //#include <bitset>
 #include "AFigure.hpp"
 #include "Player.hpp"
-//#include "King.hpp"
-//#include "Bishop.hpp"
-//#include "Knight.hpp"
-//#include "Rook.hpp"
-//#include "Queen.hpp"
-//#include "Pawn.hpp"
 
 class Game
 {
@@ -48,8 +42,6 @@ private:
 	static Game	*_instance;
 	Player		*_pl[2];
 	AFigure		*_board[_ySizeBoard][_xSizeBoard];
-//	std::array<Player *, 2>	_pl;
-//	std::array<AFigure *, _ySizeBoard, _xSizeBoard>	_board[_ySizeBoard][_xSizeBoard];
 	std::string _lastMove;
 	std::string _crntMove;
 	std::string _errMsg;

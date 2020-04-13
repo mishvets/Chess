@@ -1,12 +1,8 @@
 #include "../inc/Player.hpp"
 
-Player::Player(const std::string &side) : _side(side), _check(false), _castling(0b111)
+Player::Player(const std::string &side) : _side(side), _check(false)
 {
-//	std::shared_ptr<AFigure> ptr(p);
-//	int y = _side == "W" ? 1 : 6;
-//	for (int x = 0; x < 8; ++x) {
-//		_figVct.push_back(new Pawn(_side, x, y));
-//	}
+
 }
 
 Player::~Player()

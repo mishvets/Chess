@@ -11,8 +11,16 @@ LIB_DIR     = ./
 
 # project source files
 
-SRC             := $(SRC_DIR)main.cpp
-SRC             += $(SRC_DIR)
+SRC             := $(SRC_DIR)chess.cpp
+SRC             += $(SRC_DIR)AFigure.cpp
+SRC             += $(SRC_DIR)Bishop.cpp
+SRC             += $(SRC_DIR)Game.cpp
+SRC             += $(SRC_DIR)King.cpp
+SRC             += $(SRC_DIR)Knight.cpp
+SRC             += $(SRC_DIR)Pawn.cpp
+SRC             += $(SRC_DIR)Player.cpp
+SRC             += $(SRC_DIR)Queen.cpp
+SRC             += $(SRC_DIR)Rook.cpp
 
 
 # project object files
@@ -38,14 +46,14 @@ CC              := clang++
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $(NAME) -lncurses
+	$(CC) $(OBJ) -o $(NAME)
 
 $(OBJ): | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp $(INC_DIR)%.hpp
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
 	$(CC) $(CC_FLAGS) $(HEADER_FLAGS) -c $< -o $@
 
 clean:

@@ -52,7 +52,7 @@ tryAgain:
 	std::cout << "\t2. Load game;" << std::endl;
 	std::cout << "Game mod: " << std::endl;
 	std::getline(std::cin, gameMod);
-	for (int i = 0; i < gameMod.length(); ++i)
+	for (int i = 0; i < (int)gameMod.length(); ++i)
 		gameMod[i] = ::tolower(gameMod[i]);
 	if (gameMod == "1" || gameMod == "new game")
 		loadFile.open("./GameBoard/new.game");
@@ -169,7 +169,7 @@ input:
 	std::getline(std::cin, cmnd);
 	_crntMove = cmnd.substr(cmnd.find(' ') + 1);
 	cmnd = cmnd.substr(0,cmnd.find(' '));
-	for (int i = 0; i < cmnd.length(); ++i)
+	for (int i = 0; i < (int)cmnd.length(); ++i)
 		cmnd[i] = ::tolower(cmnd[i]);
 	if (cmnd == "-m" || cmnd == "-move")
 	{
@@ -187,7 +187,7 @@ input:
 		std::cout << "Are you sure you want to start a new game? Unsaved game will be lost." << std::endl;
 		std::cout << "Enter (y/n):" << std::endl;
 		std::getline(std::cin, cmnd);
-		for (int i = 0; i < cmnd.length(); ++i)
+		for (int i = 0; i < (int)cmnd.length(); ++i)
 			cmnd[i] = ::tolower(cmnd[i]);
 		if (cmnd == "y" || cmnd == "yes")
 		{
@@ -205,7 +205,7 @@ input:
 		std::cout << "Are you sure you want quit from game? Unsaved game will be lost." << std::endl;
 		std::cout << "Enter (y/n):" << std::endl;
 		std::getline(std::cin, cmnd);
-		for (int i = 0; i < cmnd.length(); ++i)
+		for (int i = 0; i < (int)cmnd.length(); ++i)
 			cmnd[i] = ::tolower(cmnd[i]);
 		if (cmnd == "y" || cmnd == "yes")
 			return false;
@@ -359,7 +359,7 @@ void Game::updateGame()
 		std::cout << "Check for your King. Save the king or accept defeat!" << std::endl;
 		std::cout << "Give up (y/n): " << std::endl;
 		std::getline(std::cin, inpt);
-		for (int i = 0; i < inpt.length(); ++i)
+		for (int i = 0; i < (int)inpt.length(); ++i)
 			inpt[i] = ::tolower(inpt[i]);
 		if (inpt == "y" || inpt == "yes")
 		{

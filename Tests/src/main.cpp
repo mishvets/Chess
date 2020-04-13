@@ -1,6 +1,6 @@
 #include <iostream>
-#include "inc/QueenTest.hpp"
-#include "inc/PawnTest.hpp"
+#include "../inc/QueenTest.hpp"
+#include "../inc/PawnTest.hpp"
 
 int main ()
 {
