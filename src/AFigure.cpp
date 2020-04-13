@@ -63,3 +63,8 @@ void AFigure::setPosY(int posY)
 	_posY = posY;
 }
 
+void AFigure::setLabel(const std::string &label)
+{
+	_label = label;
+}
+

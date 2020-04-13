@@ -15,6 +15,11 @@ Game::Game() : _plIndx(0)
 	_pl[0] = new Player("White");
 	_pl[1] = new Player("Black");
 
+	for (int y = 0; y < _ySizeBoard; ++y) {
+		for (int x = 0; x < _xSizeBoard; ++x) {
+			_board[y][x] = nullptr;
+		}
+	}
 //	startGame();
 
 //	printBoard();

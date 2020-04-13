@@ -16,6 +16,7 @@ public:
 	bool				isActive() const;
 
 	void				setActive(bool active);
+	void				setLabel(const std::string &label);
 	void				setPosX(int posX);
 	void				setPosY(int posY);
 

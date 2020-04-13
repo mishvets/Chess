@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "AFigure.hpp"
-//#include "Game.hpp"
 
 class Queen : public AFigure
 {
@@ -12,7 +11,7 @@ public:
 	Queen(const Queen &src);
 	Queen &operator=(const Queen &src);
 
-	bool validMove(int x, int y);
+	bool 	validMove(int x, int y);
 	void	move(int x, int y);
 };
 
