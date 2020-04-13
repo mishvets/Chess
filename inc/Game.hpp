@@ -31,6 +31,7 @@ public:
 	void 	cleanBoard();
 
 	void	setFig(AFigure *fig, int posX, int posY);
+	void	setLastMove(const std::string &lastMove);
 	void	moveFig(int xFrom, int yFrom, int xTo, int yTo);
 
 	static Game			*getInstance();

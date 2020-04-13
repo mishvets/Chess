@@ -15,8 +15,7 @@ void PawnTest::testValidMove()
 	std::string	str;
 	int	testOK = 0, testKO = 0;
 	int posX = 4, posY = 6;
-	_pawn->setPosX(posX);
-	_pawn->setPosY(posY);
+	_pawn->move(posX, posY);
 	_pawn->setLabel("BP");
 	Game::getInstance()->cleanBoard();
 	int res[] = {0, 0, 1, 0, 0,
@@ -86,7 +85,56 @@ void PawnTest::testValidMove()
 		}
 	}
 	std::cout << "TestValidMove: OK - " << testOK << ", KO - " << testKO << std::endl;
-	std::cout << std::endl;
+	_testKO += testKO;
+	_testOK += testOK;
+}
+
+void PawnTest::testEnPassant()
+{
+	Pawn		p1("BP", 2, 4);
+	Pawn		p2("BP", 2, 3);
+	Pawn		p3("BP", 3, 4);
+	AFigure		*fig;
+	std::string	str;
+	int	testOK = 0, testKO = 0;
+	int posX = 3, posY = 4;
+	_pawn->move(posX, posY);
+	_pawn->setLabel("WP");
+	Game::getInstance()->cleanBoard();
+	Game::getInstance()->setLastMove("c7 c5");
+	Game::getInstance()->setFig(&p1, 2, 4);
+	Game::getInstance()->setFig(&p3, 3, 4);
+	int res[] = {1, 0, 0};
+	for (int xInp = 2, i = 0; xInp <= 4; ++xInp) {
+		if (res[i++] == _pawn->enPassant(xInp))
+			testOK++;
+		else
+		{
+			testKO++;
+			fig = Game::getInstance()->getFig(xInp, posY + 1);
+			str = fig ? fig->getLabel() : "none";
+			std::cout << testKO << ". testEnPassant - KO: from - " << (char)(posX + 97) << posY + 1
+					  << " to - " << (char)(xInp + 97) << posY + 2 << " label - " << _pawn->getLabel()
+					  << " enemy - " << str << std::endl;
+		}
+	}
+	_pawn->setLabel("BP");
+	Game::getInstance()->setFig(&p1, 2, 4);
+	res[0] = 0;
+	for (int xInp = 2, i = 0; xInp <= 4; ++xInp) {
+		if (res[i++] == _pawn->enPassant(xInp))
+			testOK++;
+		else
+		{
+			testKO++;
+			fig = Game::getInstance()->getFig(xInp, posY + 1);
+			str = fig ? fig->getLabel() : "none";
+			std::cout << testKO << ". testEnPassant - KO: from - " << (char)(posX + 97) << posY + 1
+					  << " to - " << (char)(xInp + 97) << posY + 2 << " label - " << _pawn->getLabel()
+					  << " enemy - " << str << std::endl;
+		}
+	}
+	std::cout << "TestEnPassant: OK - " << testOK << ", KO - " << testKO << std::endl;
 	_testKO += testKO;
 	_testOK += testOK;
 }
@@ -105,5 +153,7 @@ PawnTest::~PawnTest()
 {
 	delete _pawn;
 }
+
+
 
 

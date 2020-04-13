@@ -504,3 +504,8 @@ void Game::cleanBoard()
 		}
 	}
 }
+
+void Game::setLastMove(const std::string &lastMove)
+{
+	_lastMove = lastMove;
+}

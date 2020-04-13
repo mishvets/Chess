@@ -10,6 +10,7 @@ public:
 	PawnTest();
 	~PawnTest();
 	void testValidMove();
+	void testEnPassant();
 
 	int getTestOk() const;
 	int getTestKo() const;

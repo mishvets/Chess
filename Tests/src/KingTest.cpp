@@ -16,8 +16,7 @@ void KingTest::testValidMove()
 				 0, 1, 1, 1, 0,
 				 0, 0, 0, 0, 0};
 
-	_king->setPosX(posX);
-	_king->setPosY(posY);
+	_king->move(posX, posY);
 	_king->setLabel("WK");
 	_king->setStartCastling(0b000);
 	for (int yInp = 2, i = 0; yInp <= 6; ++yInp) {
@@ -41,27 +40,11 @@ void KingTest::testValidMove()
 	_testOK += testOK;
 }
 
-int KingTest::getTestOk() const
-{
-	return _testOK;
-}
-
-int KingTest::getTestKo() const
-{
-	return _testKO;
-}
-
-KingTest::~KingTest()
-{
-	delete _king;
-}
-
 void KingTest::testValidMoveCastling()
 {
 	int	testOK = 0, testKO = 0;
 	int posX = 4, posY = 0;
-	_king->setPosX(posX);
-	_king->setPosY(posY);
+	_king->move(posX, posY);
 	_king->setLabel("WK");
 	Rook		r1("WR", 0, 0);
 	Rook		r2("WR", 7, 0);
@@ -130,5 +113,20 @@ void KingTest::testValidMoveCastling()
 	std::cout << std::endl;
 	_testKO += testKO;
 	_testOK += testOK;
+}
+
+int KingTest::getTestOk() const
+{
+	return _testOK;
+}
+
+int KingTest::getTestKo() const
+{
+	return _testKO;
+}
+
+KingTest::~KingTest()
+{
+	delete _king;
 }
 

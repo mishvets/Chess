@@ -33,7 +33,6 @@ void RookTest::testValidMove()
 		}
 	}
 	std::cout << "TestValidMove: OK - " << testOK << ", KO - " << testKO << std::endl;
-	std::cout << std::endl;
 	_testKO += testKO;
 	_testOK += testOK;
 }
