@@ -14,7 +14,7 @@ make
 ### In game
 First you should choose game: new game or load previous game that was saved.
 
-Then the game board and a list of available teams will be displayed.
+Then the game board and a list of available commands will be displayed.
 ##### Board
 ```
                    W H I T E
